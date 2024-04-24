@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implementación de las 5S en el área contable</title>
+    <style>
+        /* Estilos adicionales para el logo */
+        .logo img {
+            width: 50px; /* Ancho del logo */
+            height: auto; /* Altura automática para mantener la proporción */
+            vertical-align: middle; /* Alineación vertical en el centro */
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .logo {
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        h2 {
+            margin-top: 20px;
+            color: #555;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        input[type="date"],
+        select,
+        textarea {
+            width: calc(100% - 10px);
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 100px;
+            resize: none;
+        }
+
+        button,
+        input[type="date"],
+        select,
+        textarea {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+        }
+
+        #form {
+            margin-top: 30px;
+        }
+
+        #progress {
+            margin-top: 30px;
+        }
+
+        #progress ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #progress li {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        span {
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .process-filter {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .process-filter select {
+            width: 30%;
+            padding: 10px;
+        }
+
+        .status-filter select {
+            padding: 10px;
+        }
+
+        #effectiveness-btn {
+            background-color: #28a745;
+        }
+
+        #save-btn {
+            background-color: #17a2b8;
+        }
+
+        #clear-btn {
+            background-color: #dc3545;
+        }
+
+        #export-btn {
+            background-color: #ffc107;
+        }
+
+        #saved-data {
+            margin-top: 30px;
+        }
+
+        #saved-data table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        #saved-data th, #saved-data td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        #saved-data th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+        }
+
+        .delete-btn:hover {
+            background-color: #bd2130;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado con el nombre de la empresa y el logo -->
+    <div class="header">
+        <div class="logo">
+            <img src="https://drive.google.com/file/d/141qo7eoWDFuiiKaBnsn3P-RzWGMIy4eX/view?usp=drive_link" alt="Logo Peruvian Shipping">
+        </div>
+        <h1>PERUVIAN SHIPPING SAC</h1>
+    </div>
+    <!-- Contenido principal -->
+    <div class="container">
+        <h1>Implementación de las 5S en el área contable</h1>
+        <div class="process-filter">
+            <label for="process-filter">Filtro de Procesos:</label>
+            <select id="process-filter" name="process-filter">
+                <option value="seiri">Seiri (Clasificación)</option>
+                <option value="seiton">Seiton (Orden)</option>
+                <option value="seiso">Seiso (Limpieza)</option>
+                <option value="seiketsu">Seiketsu (Estandarización)</option>
+                <option value="shitsuke">Shitsuke (Disciplina)</option>
+            </select>
+        </div>
+        <div class="status-filter">
+            <label for="status-filter">Estado:</label>
+            <select id="status-filter" name="status-filter">
+                <option value="inicio">Inicio</option>
+                <option value="proceso">En Proceso</option>
+                <option value="terminado">Terminado</option>
+            </select>
+        </div>
+        <div id="steps">
+            <h2>Pasos:</h2>
+            <button onclick="seiri()">Seiri (Clasificación)</button>
+            <button onclick="seiton()">Seiton (Orden)</button>
+            <button onclick="seiso()">Seiso (Limpieza)</button>
+            <button onclick="seiketsu()">Seiketsu (Estandarización)</button>
+            <button onclick="shitsuke()">Shitsuke (Disciplina)</button>
+        </div>
+        <div id="form">
+            <h2>Información Adicional:</h2>
+            <label for="fecha">Fecha de Emisión:</label>
+            <input type="date" id="fecha" name="fecha">
+            <label for="colaborador">Colaborador:</label>
+            <select id="colaborador" name="colaborador">
+                <option value="Arnol Alexis Jimenez Alcala">Arnol Alexis Jimenez Alcala</option>
+                <option value="Cintya Hidaldo Paz">Cintya Hidaldo Paz</option>
+                <option value="Jessica Yausen">Jessica Yausen</option>
+                <option value="Jordan Osorio Capillo">Jordan Osorio Capillo</option>
+            </select>
+            <label for="comentario">Comentario:</label>
+            <textarea id="comentario" name="comentario" maxlength="200"></textarea>
+            <button id="effectiveness-btn" onclick="calcularEfectividad()">Efectividad</button>
+            <button id="save-btn" onclick="guardar()">Guardar</button>
+            <button id="clear-btn" onclick="limpiar()">Limpiar</button>
+            <button id="export-btn" onclick="exportar()">Exportar</button>
+        </div>
+        <div id="progress">
+            <h2>Progreso:</h2>
+            <ul>
+                <li>Seiri: <span id="seiriProgress">No completado</span></li>
+                <li>Seiton: <span id="seitonProgress">No completado</span></li>
+                <li>Seiso: <span id="seisoProgress">No completado</span></li>
+                <li>Seiketsu: <span id="seiketsuProgress">No completado</span></li>
+                <li>Shitsuke: <span id="shitsukeProgress">No completado</span></li>
+            </ul>
+        </div>
+        <div id="saved-data">
+            <h2>Información Guardada:</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Colaborador</th>
+                        <th>Filtro de Proceso</th>
+                        <th>Estado</th>
+                        <th>Comentario Adicional</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="saved-data-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        let progress = {
+            seiri: false,
+            seiton: false,
+            seiso: false,
+            seiketsu: false,
+            shitsuke: false
+        };
+
+        function updateProgress(step) {
+            progress[step] = true;
+            document.getElementById(step + "Progress").innerText = "Completado";
+        }
+
+        function seiri() {
+            // Lógica para el paso de Seiri
+            // Aquí podrías implementar la funcionalidad específica para esta etapa
+            updateProgress("seiri");
+        }
+
+        function seiton() {
+            // Lógica para el paso de Seiton
+            updateProgress("seiton");
+        }
+
+        function seiso() {
+            // Lógica para el paso de Seiso
+            updateProgress("seiso");
+        }
+
+        function seiketsu() {
+            // Lógica para el paso de Seiketsu
+            updateProgress("seiketsu");
+        }
+
+        function shitsuke() {
+            // Lógica para el paso de Shitsuke
+            updateProgress("shitsuke");
+        }
+
+        function calcularEfectividad() {
+            let puntuacionTotal = 0;
+            let puntuacionMaximaPosible = 50; // 5 procesos * 10 puntos
+
+            // Calcula la puntuación total sumando las puntuaciones de cada proceso
+            for (let step in progress) {
+                if (progress[step]) {
+                    puntuacionTotal += 10; // Cada paso completado vale 10 puntos
+                }
+            }
+
+            // Calcula la efectividad
+            let efectividad = (puntuacionTotal / puntuacionMaximaPosible) * 100;
+            alert("Efectividad de la implementación: " + efectividad.toFixed(2) + "%");
+        }
+
+        function guardar() {
+            let fecha = document.getElementById("fecha").value;
+            let colaborador = document.getElementById("colaborador").value;
+            let proceso = document.getElementById("process-filter").value;
+            let estado = document.getElementById("status-filter").value;
+            let comentario = document.getElementById("comentario").value;
+
+            let tableBody = document.getElementById("saved-data-body");
+            let newRow = tableBody.insertRow();
+
+            let cellFecha = newRow.insertCell(0);
+            let cellColaborador = newRow.insertCell(1);
+            let cellProceso = newRow.insertCell(2);
+            let cellEstado = newRow.insertCell(3);
+            let cellComentario = newRow.insertCell(4);
+            let cellAcciones = newRow.insertCell(5);
+
+            cellFecha.innerHTML = fecha;
+            cellColaborador.innerHTML = colaborador;
+            cellProceso.innerHTML = proceso;
+            cellEstado.innerHTML = estado;
+            cellComentario.innerHTML = comentario;
+
+            let deleteButton = document.createElement("button");
+            deleteButton.innerHTML = "Eliminar";
+            deleteButton.className = "delete-btn";
+            deleteButton.onclick = function() {
+                tableBody.removeChild(newRow);
+            };
+
+            cellAcciones.appendChild(deleteButton);
+        }
+
+        function limpiar() {
+            document.getElementById("fecha").value = "";
+            document.getElementById("colaborador").selectedIndex = 0;
+            document.getElementById("comentario").value = "";
+        }
+
+        function exportar() {
+            let table = document.getElementById("saved-data-body");
+            let data = "Fecha | Colaborador | Filtro de Proceso | Estado | Comentario Adicional\n";
+
+            for (let i = 0; i < table.rows.length; i++) {
+                let rowData = "";
+                for (let j = 0; j < table.rows[i].cells.length; j++) {
+                    rowData += table.rows[i].cells[j].innerHTML + " | ";
+                }
+                // Elimina el último pipe y el espacio en blanco
+                rowData = rowData.slice(0, -3);
+                data += rowData + "\n";
+            }
+
+            let element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data));
+            element.setAttribute('download', 'informacion_guardada.txt');
+            element.style.display = 'none';
+
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+    </script>
+    <footer>®Desarrollado por Alexis Jimenéz</footer>
+</body>
+</html>
